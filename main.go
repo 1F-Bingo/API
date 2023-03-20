@@ -12,11 +12,6 @@ func init() {
 }
 
 func main() {
-	if os.Getenv("GIN_MODE") == "release" {
-		gin.SetMode(gin.ReleaseMode)
-		log.Info("Running in release mode")
-	}
-
 	r := gin.Default()
 	if os.Getenv("GIN_MODE") == "release" {
 		_ = r.SetTrustedProxies([]string{"172.18.0.3"})
