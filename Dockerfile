@@ -16,6 +16,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     rm -rf /var/lib/apt/lists/* \
 
 ENV GIN_MODE=release
+LABEL version=latest
+
 COPY --from=builder /app/server /app/server
 
 EXPOSE 8080
