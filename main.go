@@ -19,7 +19,7 @@ func main() {
 	r := gin.Default()
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	if os.Getenv("GIN_MODE") == "release" {
-		r.SetTrustedProxies([]string{"172.18.0.3"})
+		r.SetTrustedProxies([]string{os.Getenv("PROXY_IP")})
 	}
 
 	v1 := r.Group("/api/v1")
