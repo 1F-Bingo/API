@@ -29,7 +29,7 @@ func main() {
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	if os.Getenv("GIN_MODE") == "release" {
 		r.SetTrustedProxies([]string{os.Getenv("PROXY_IP")})
-		panic("Database not setup for prod")
+		//panic("Database not setup for prod")
 	}
 
 	db := internal.GetDB()
