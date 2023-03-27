@@ -24,12 +24,15 @@ type FetchData struct {
 // @Security Bearer
 func Fetch(c *gin.Context) {
 	name := c.Param("username")
-	user, err := models.GetOrError(name)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Invalid username."})
+	user, err := models.UserFromJWT(c)
+	if user.Username != name {
+		// Info leakage if forbidden
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "invalid username"})
+		return
+	} else if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "internal server error"})
 		return
 	}
-	// TODO Ensure JWT username matches current user requested
 
 	c.JSON(200, FetchData{Username: user.Username})
 }
