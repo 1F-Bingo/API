@@ -27,6 +27,13 @@ Users can create custom bingo items for their own leagues
 
 ### Running the API
 
+#### Both
+
+Environment variables required to run
+
+- `TOKEN_HOUR_LIFESPAN=int`, JWT token lifetime in hours
+- `API_SECRET=string`, API secret to sign JWT's with
+
 #### Developing
 
 Run the server locally using `go build`, documentation can be generated using `swag init`.

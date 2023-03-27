@@ -1,9 +1,9 @@
 package user
 
 import (
-	"API/internal"
 	"API/internal/models"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 // FetchData model info
@@ -24,7 +24,12 @@ type FetchData struct {
 // @Security Bearer
 func Fetch(c *gin.Context) {
 	name := c.Param("username")
-	var user models.User
-	internal.GetDB().First(&user, "username = ?", name)
+	user, err := models.GetOrError(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "Invalid username."})
+		return
+	}
+	// TODO Ensure JWT username matches current user requested
+
 	c.JSON(200, FetchData{Username: user.Username})
 }

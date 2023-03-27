@@ -4,7 +4,9 @@ import (
 	docs "API/docs"
 	"API/internal"
 	"API/internal/controllers"
+	"API/internal/controllers/auth"
 	"API/internal/controllers/user"
+	"API/internal/middlewares"
 	"API/internal/models"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -42,8 +44,12 @@ func main() {
 		v1.GET("/docs/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 		users := v1.Group("/users")
 		{
-			users.GET("/:username", user.Fetch)
 			users.POST("/:username", user.Register)
+			users.GET("/:username", middlewares.JwtAuthMiddleware(), user.Fetch)
+		}
+		authGroup := v1.Group("/auth")
+		{
+			authGroup.POST("/login", auth.Login)
 		}
 	}
 
