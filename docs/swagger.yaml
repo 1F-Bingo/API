@@ -1,8 +1,26 @@
 definitions:
-  routers.HelloworldD:
+  controllers.HelloworldD:
     properties:
       message:
         type: string
+    type: object
+  user.FetchData:
+    description: Registration request body
+    properties:
+      username:
+        maxLength: 50
+        type: string
+    required:
+    - username
+    type: object
+  user.RegisterBody:
+    description: Registration request body
+    properties:
+      password:
+        maxLength: 75
+        type: string
+    required:
+    - password
     type: object
 info:
   contact: {}
@@ -18,8 +36,61 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/routers.HelloworldD'
+            $ref: '#/definitions/controllers.HelloworldD'
       summary: ping example
       tags:
       - example
+  /users/{username}:
+    get:
+      description: Register a new user account
+      parameters:
+      - description: The username to register, max length 50.
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.FetchData'
+        "400":
+          description: Bad Request
+      security:
+      - Bearer: []
+      summary: Fetch a user account
+      tags:
+      - User routes
+    post:
+      consumes:
+      - application/json
+      description: Register a new user account
+      parameters:
+      - description: Request body
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.RegisterBody'
+      - description: The username to register, max length 50.
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+      security:
+      - Bearer: []
+      summary: Register a new user account
+      tags:
+      - User routes
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

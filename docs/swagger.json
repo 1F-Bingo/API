@@ -21,21 +21,130 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/routers.HelloworldD"
+                            "$ref": "#/definitions/controllers.HelloworldD"
                         }
+                    }
+                }
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Register a new user account",
+                "tags": [
+                    "User routes"
+                ],
+                "summary": "Fetch a user account",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "The username to register, max length 50.",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user.FetchData"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Register a new user account",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User routes"
+                ],
+                "summary": "Register a new user account",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/user.RegisterBody"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "The username to register, max length 50.",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request"
                     }
                 }
             }
         }
     },
     "definitions": {
-        "routers.HelloworldD": {
+        "controllers.HelloworldD": {
             "type": "object",
             "properties": {
                 "message": {
                     "type": "string"
                 }
             }
+        },
+        "user.FetchData": {
+            "description": "Registration request body",
+            "type": "object",
+            "required": [
+                "username"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "maxLength": 50
+                }
+            }
+        },
+        "user.RegisterBody": {
+            "description": "Registration request body",
+            "type": "object",
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "maxLength": 75
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "description": "Type \"Bearer\" followed by a space and JWT token.",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }
