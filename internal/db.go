@@ -11,7 +11,7 @@ var db *gorm.DB
 func GetDB() *gorm.DB {
 	var dbErr error
 	if db == nil {
-		db, dbErr = gorm.Open(sqlite.Open("app.db"), &gorm.Config{})
+		db, dbErr = gorm.Open(sqlite.Open("db/app.db"), &gorm.Config{})
 	}
 	if dbErr != nil {
 		log.Fatal("db connection error:", dbErr)
